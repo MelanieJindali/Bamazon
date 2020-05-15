@@ -1,0 +1,8 @@
+bamazonCustoemr.js -
+    - Require mysql
+    - Create a connection, then create a connection.connect function
+    - Display all items for sale (include id, names, and prices of products)
+    - Create a function that'll log all products
+    - Use connection.query that'll take in a function
+    - Add if err statment
+    
