@@ -6,3 +6,14 @@ bamazonCustoemr.js -
     - Use connection.query that'll take in a function
     - Add if err statment
     
+Prompt user with 2 messages
+    - install inquirer
+
+    * 1st prompt asks for the ID of product they'd like to buy
+    * 2nd prompt asks for quantity they'd like to buy
+
+    -* App will check IF inventory has enough products to sell
+        - Select from stock_quantity, if stock_quantity is greater than or equal to user qty input, proceed to sell product
+
+    -* IF not 
+        - Select from stock_quantity and if it is less than user qty input, log "Insufficient quantity" & stop order from proceeding
