@@ -28,16 +28,13 @@ function startOrder() {
             }]) .then(function(answer) {
                 connection.query('SELECT * FROM `products` WHERE `item_id` =?', answer.prodID, function(err, res) {
                     if (err) throw err;
-                    // console.log(res[0]);
-                    // console.log(answer.prodID)
-
-                    
+                    if (answer.units > res[0].stock_quantity) {
+                        console.log("Sorry, there's an insufficient quantity of that product.");
+                        connection.end();
+                }
             }); 
+            
      });
-}
-
-function sellProd() {
-    console.log("Hi.")
 }
 
 function displayProducts() {
