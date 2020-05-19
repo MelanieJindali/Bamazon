@@ -17,7 +17,7 @@ connection.connect(function(err) {
 
 function startOrder() {
     inquirer
-        .prompt({
+        .prompt([{
                 name: "prodID",
                 type: "input",
                 message: "Please enter the ID of the product you would like to buy."
@@ -25,10 +25,11 @@ function startOrder() {
                 name: "units",
                 type: "input",
                 message: "How much of the product would you like to buy?"
-            }) .then(function(answer) {
-                connection.query('SELECT * FROM `products` WHERE `item_id`', answer.prodID, function(err, results) {
+            }]) .then(function(answer) {
+                connection.query('SELECT * FROM `products` WHERE `item_id` =?', answer.prodID, function(err, res) {
                     if (err) throw err;
-                    console.log(results)
+                    // console.log(res[0]);
+                    // console.log(answer.prodID)
 
                     
             }); 
@@ -41,12 +42,11 @@ function sellProd() {
 
 function displayProducts() {
     console.log("\nDisplaying all available products...\n");
-    connection.query("SELECT * FROM products", function(err,res) {
+    connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
         for (var i = 0; i < res.length; i++) {
         console.log(`ID: ${res[i].item_id} || Product: ${res[i].product_name} || Price: $${res[i].price}\n-----------------------------------------------------`);
         }
-        connection.end();
         startOrder();
     });
 }
