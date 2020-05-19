@@ -18,26 +18,21 @@ connection.connect(function(err) {
 function startOrder() {
     inquirer
         .prompt({
-            name: "prodID",
-            type: "input",
-            message: "Please enter the ID of the product you would like to buy."
-        }, {
-            name: "units",
-            type: "input",
-            message: "How much of the product would you like to buy?"
-        }) .then(function(answer) {
-        connection.query("SELECT * FROM products WHERE item_id", function(err, res) {
-            if (err) throw err;
-            
-            for (var i = 0; i < res.length; i++) {
-                console(res)
-                if (res[i].item_id === answer.prodID) {
-                    console.log(answer.prodID)
-                }
-                
-            }
-        })
-     })
+                name: "prodID",
+                type: "input",
+                message: "Please enter the ID of the product you would like to buy."
+            }, {
+                name: "units",
+                type: "input",
+                message: "How much of the product would you like to buy?"
+            }) .then(function(answer) {
+                connection.query('SELECT * FROM `products` WHERE `item_id`', answer.prodID, function(err, results) {
+                    if (err) throw err;
+                    console.log(results)
+
+                    
+            }); 
+     });
 }
 
 function sellProd() {
@@ -45,10 +40,12 @@ function sellProd() {
 }
 
 function displayProducts() {
-    console.log("Displaying all available products... \n");
+    console.log("\nDisplaying all available products...\n");
     connection.query("SELECT * FROM products", function(err,res) {
         if (err) throw err;
-        console.table(res);
+        for (var i = 0; i < res.length; i++) {
+        console.log(`ID: ${res[i].item_id} || Product: ${res[i].product_name} || Price: $${res[i].price}\n-----------------------------------------------------`);
+        }
         connection.end();
         startOrder();
     });
