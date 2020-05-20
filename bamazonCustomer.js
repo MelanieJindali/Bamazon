@@ -29,8 +29,17 @@ function startOrder() {
                 connection.query('SELECT * FROM `products` WHERE `item_id` =?', answer.prodID, function(err, res) {
                     if (err) throw err;
                     if (answer.units > res[0].stock_quantity) {
-                        console.log("Sorry, there's an insufficient quantity of that product.");
+                        console.log(`Current stock quantity: ${res[0].stock_quantity}`)
+                        console.log("Sorry, there's an insufficient quantity of that product. Please select another item or purchase a smaller amount.");
                         connection.end();
+                } else {
+                    var newQty = res[0].stock_quantity -= answer.units
+                    // console.log(newQty);
+                    var total = answer.units *= res[0].price
+                    // console.log(total);
+                    connection.query('UPDATE `products` SET ?', [{stock_quantity: newQty}] )
+                    console.log(`Your total amount comes to $${total}. Please proceed to checkout.`)
+                    connection.end();
                 }
             }); 
             
