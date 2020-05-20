@@ -30,20 +30,34 @@ function startOrder() {
                     if (err) throw err;
                     if (answer.units > res[0].stock_quantity) {
                         console.log(`Current stock quantity: ${res[0].stock_quantity}`)
-                        console.log("Sorry, there's an insufficient quantity of that product. Please select another item or purchase a smaller amount.");
-                        connection.end();
+                        console.log("Sorry, there's an insufficient quantity of that product.");
+                        newOrder();
                 } else {
                     var newQty = res[0].stock_quantity -= answer.units
                     // console.log(newQty);
                     var total = answer.units *= res[0].price
                     // console.log(total);
-                    connection.query('UPDATE `products` SET ?', [{stock_quantity: newQty}] )
-                    console.log(`Your total amount comes to $${total}. Please proceed to checkout.`)
+                    connection.query('UPDATE `products` SET ?', [{stock_quantity: newQty}])
+                    console.log(`Your total amount comes to $${total}. Please proceed to checkout.`);
                     connection.end();
                 }
             }); 
             
      });
+}
+
+function newOrder() {
+	inquirer.prompt({
+		type: "confirm",
+		message: "Would you like to make another purchase?",
+		name: "yes",
+	}).then(function(answer) {
+        if (answer.yes) {
+            startOrder();
+        } else {
+            connection.end();
+        }   
+    });
 }
 
 function displayProducts() {
